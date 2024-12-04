@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .pagination {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .page-info {
+            font-size: 0.9em;
+            color: #666;
+        }
+        #loadingIndicator, #errorMessage {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        #errorMessage {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Employee List</h1>
+    <div id="loadingIndicator">Loading employees...</div>
+    <div id="errorMessage" style="display: none;"></div>
+    <table id="employeeTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Employee ID</th>
+                <th>Aadhar Number</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Designation</th>
+                <th>Department</th>
+                <th>Salary</th>
+                <th>Joining Date</th>
+            </tr>
+        </thead>
+        <tbody id="employeeTableBody">
+        </tbody>
+    </table>
+
+    <script>
+        function fetchEmployees() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorMessage = document.getElementById('errorMessage');
+            const employeeTable = document.getElementById('employeeTable');
+            const tableBody = document.getElementById('employeeTableBody');
+
+            loadingIndicator.style.display = 'block';
+            errorMessage.style.display = 'none';
+            employeeTable.style.display = 'none';
+            tableBody.innerHTML = '';
+
+            fetch('http://localhost:8080/api/employees', {
+                method: 'GET'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                loadingIndicator.style.display = 'none';
+                employeeTable.style.display = 'table';
+
+                const employees = data;
+
+                employees.forEach(emp => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${emp.name}</td>
+                        <td>${emp.employeeId}</td>  
+                        <td>${emp.aadharNumber}</td>
+                        <td>${emp.gender}</td>
+                        <td>${emp.age}</td>
+                        <td>${emp.designation}</td>
+                        <td>${emp.department}</td>
+                        <td>${emp.salary.toLocaleString('en-IN', {style: 'currency', currency: 'INR'})}</td>
+                        <td>${emp.joiningDate}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                loadingIndicator.style.display = 'none';
+                errorMessage.textContent = `Failed to load employees: ${error.message}`;
+                errorMessage.style.display = 'block';
+                console.error('Error:', error);
+            });
+        }
+
+        fetchEmployees();
+    </script>
+</body>
+</html>

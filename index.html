@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Registration</title>
+    <link rel=stylesheet type="text/css" href="styles.css">
+</head>
+<body>
+    <div style="display: flex; align-items: center; justify-content: space-around;"><h2>Employee Registration / </h2><h3><a href="table.html">Employees</a></h3></div>
+    <form id="employeeForm">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="aadharNumber" placeholder="Aadhar Number" required>
+        <select name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="OTHER">Other</option>
+        </select>
+        <input type="number" name="age" placeholder="Age" required>
+        <input type="number" name="salary" placeholder="Salary" step="0.01" required>
+        <input type="text" name="employeeId" placeholder="Employee ID" required>
+        <select name="designation" required>
+            <option value="">Select Designation</option>
+            <option value="JUNIOR_DEVELOPER">Junior Developer</option>
+            <option value="ANALYST">Analyst</option>
+            <option value="PROJECT_MANAGER">Project Manager</option>
+            <option value="HR_MANAGER">HR Manager</option>
+            <option value="SENIOR_DEVELOPER">Senior Developer</option>
+            <option value="TEAM_LEAD">Team Lead</option>
+        </select>
+        <input type="text" name="department" placeholder="Department" required>
+        <input type="date" name="joiningDate" placeholder="Joining Date" required>
+        <button type="submit">Register Employee</button>
+    </form>
+    <div id="alertContainer"></div>
+    <script src="script.js"></script>
+</body>
+</html>
